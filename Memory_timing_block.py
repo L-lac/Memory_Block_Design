@@ -1,28 +1,40 @@
+import argparse 
 import pandas as pd
 import os
 
-# Load your data (adjust the path as needed)
-input_file = '/mnt/data/Run1_Recognition.xlsx'
-df = pd.read_excel(input_file)
+# Set up argparse to take input file from the command line
+parser = argparse.ArgumentParser(description='Generate timing files from an Excel input file.')
+parser.add_argument('input_file', type=str, help='Path to the input Excel (.xlsx) file')
+args = parser.parse_args()
 
+# Get input file path
+input_file = args.input_file
+
+# Auto-detect run and phase from filename
+filename = os.path.basename(input_file)  # e.g., 'Run1_Recognition.xlsx'
+basename = filename.replace('.xlsx', '')
+
+# Extract run and phase
+parts = basename.split('_')
+run = parts[0]        # 'Run1'
+phase_raw = parts[1]  # 'Recognition'
+phase = 'Recog' if 'recog' in phase_raw.lower() else 'Study'
+
+df = pd.read_excel(input_file)
 # Preprocessing: fill NA to ensure no crashes
 df['Condition'] = df['Condition'].fillna('FALSE')
 
 # Create output directory
-output_dir = '/mnt/data/timing_files'
+output_dir = os.path.join(os.path.dirname(__file__), 'Memory Block timing files')
 os.makedirs(output_dir, exist_ok=True)
 
-# Phase and Material Type identifiers
-phases = ['Recog', 'Study']
+#Material Type identifiers
 material_types = {
     'Object': 'Obj',
     'Scene': 'Scene',
     'Pair': 'Pair'
 }
 
-# Assume this file is Recognition Phase Run1
-phase = 'Recog'
-run = 'Run1'
 
 # Helper function to process blocks and write files
 def process_material(df_material, material_label):
