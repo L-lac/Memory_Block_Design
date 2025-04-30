@@ -1,6 +1,7 @@
 import argparse 
 import pandas as pd
 import os
+import subprocess 
 
 # Set up argparse to take input file from the command line
 parser = argparse.ArgumentParser(description='Generate timing files from an Excel input file.')
@@ -70,3 +71,4 @@ for mat_type, mat_label in material_types.items():
         process_material(df_mat, mat_label)
 
 print(f"Timing files created in {output_dir}")
+subprocess.run(["open", output_dir])
