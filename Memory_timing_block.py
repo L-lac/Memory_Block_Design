@@ -66,7 +66,7 @@ for file in excel_files:
                 f.write(f"{onset:.6f}\t{dur:.6f}\t{mod}\n")
 
     for mat_type, mat_label in material_types.items():
-        df_mat = df[df['Material_T'] == mat_type]
+        df_mat = df[df['Material_Type'] == mat_type]
         if not df_mat.empty:
             process_material(df_mat, mat_label)
 
