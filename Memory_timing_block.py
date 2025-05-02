@@ -1,17 +1,3 @@
-import argparse 
-import pandas as pd
-import os
-import subprocess 
-
-# Set up argparse to take input file from the command line
-parser = argparse.ArgumentParser(description='Generate recognition timing files from a folder of Excel sheets.')
-parser.add_argument('input_folder', type=str, help='Path to folder with recognition .xlsx files')
-args = parser.parse_args()
-input_folder = args.input_folder
-
-# Output folder
-output_dir = os.path.join(os.path.dirname(__file__), 'Memory Block timing files')
-os.makedirs(output_dir, exist_ok=True)
 
 #Material Type identifiers
 material_types = {
